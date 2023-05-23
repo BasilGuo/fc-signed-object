@@ -1,0 +1,109 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-05-23T00:47:09.013296+00:00",
+  "repo": "BasilGuo/fc-signed-object",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOJl-e985Q_CaK",
+      "title": "Update and rename draft-todo-yourname-protocol.md to draft-guo-fc-so.md",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/1",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "init repo",
+      "createdAt": "2023-05-22T07:29:57Z",
+      "updatedAt": "2023-05-22T07:33:00Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "5bd72e72ef2fc4397f74375ca8d777df1f4c26dd",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "initial",
+      "headRefOid": "bc2e8a02a2c8e9f51592c8360450d79ec70e1f92",
+      "closedAt": "2023-05-22T07:33:00Z",
+      "mergedAt": "2023-05-22T07:33:00Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "bde015ad5945d9c6cc1fcad4dcf2f9d36fa95abe"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOJl-e985Q_xZ5",
+      "title": "update: sketch of FCSO",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/2",
+      "state": "OPEN",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The skeleton of FC signed object.",
+      "createdAt": "2023-05-22T09:33:06Z",
+      "updatedAt": "2023-05-22T09:33:39Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "7e2c5bb33eb8f317d6d6116ca6968e6a3e0057b9",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "sketch",
+      "headRefOid": "8c070e4749427b3eb3d6e30a4afff8677bfad236",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}

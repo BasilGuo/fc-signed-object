@@ -89,6 +89,13 @@ Table of Contents
 
 1.  Introduction
 
+   TODO: need more revised.  The primary purpose of the Resource Public
+   Key Infrastructure (RPKI) is to improve routing security.  (See
+   [RFC6480] for more information.)  As part of this system, a mechanism
+   is needed to allow entities to verify that an AS has been given
+   permission by an IP address holder to advertise route along the
+   propagation path.  A FC provides this function.
+
    Forwarding Commitment (FC) is a signed object that binds IP prefix
    with AS and its next hops, eventually it could compose and protect
    the path of BGP update propagation.  It uses a Web of Trust in this
@@ -134,7 +141,7 @@ Table of Contents
 2.  The FC Content-Type
 
    The content-type for a FC is defined as ForwardingCommitment and has
-   the numerical value of (TODO OID).
+   the numerical value of 1.2.840.113549.1.9.16.1.(TBD).
 
    This OID MUST appear both within the eContentType in the
    encapContentInfo object as well as the content-type signed attribute
@@ -142,34 +149,38 @@ Table of Contents
 
 3.  The FC eContent
 
-   The content of a FC identifies a forwarding commitments and
-   forwarding bindings that an Autonomous System (AS) announces to other
-   nodes upon receiving BGP-update messages.  Other ASes which on-path
-   can validate the FC and perform path verification for traffic
-   forwarding based on the AS-path information.  Off-path ASes can
-   utilize this FC for collaborative filtering.  A FC is formally
-   defined as:
+   The content of a FC identifies a forwarding commitment and forwarding
+   binding that an AS announces to other nodes upon receiving BGP-update
+   message.  Other ASes which on-path can validate the FC and perform
+   path verification for traffic forwarding based on the AS-path
+   information.  Off-path ASes can utilize this FC for collaborative
+   filtering.  A FC is formally defined as:
 
-   ForwardingCommitment ::= SEQUENCE {
-       version [0] INTEGER DEFAULT 0,
-       asID  ASID,
-       prefix Prefix,
+   ct-FC CONTENT-TYPE ::=
+       { ForwardingCommitmentAttestation IDENTIFIED BY id-ct-FC }
+
+   id-ct-FC OBJECT IDENTIFIER ::= { id-ct TBD }
+
+   ForwardingCommitmentAttestation ::= SEQUENCE {
+       version [0]         INTEGER DEFAULT 0,
+       asID                ASID,
+       prefix              SEQUENCE (SIZE(1)) OF Prefix,
        fc FC }
 
-   ASID ::= INTEGER
+   ASID ::= INTEGER (0..4294967295)
 
    Prefix ::= SEQUENCE {
-       afi AFI,
-       address IPAddress,
-       prefixLength INTEGER }
+       afi                 AFI,
+       address             IPAddress,
+       prefixLength        INTEGER (SIZE(0..128)}
 
    AFI ::= OCTET STRING (SIZE(2))
 
-   IPAddress ::= BIT STRING
+   IPAddress ::= BIT STRING (SIZE(0..128))
 
    FC ::= SEQUENCE {
-       id BIT STRING
-       signature BIT STRING }
+       id                  BIT STRING
+       signature           BIT STRING }
 
    Note that this content appears as the eContent within the
    encapContentInfo (see [RFC6488]).
@@ -228,11 +239,6 @@ Table of Contents
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
-   [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
-              Border Gateway Protocol 4 (BGP-4)", RFC 4271,
-              DOI 10.17487/RFC4271, January 2006,
-              <https://www.rfc-editor.org/rfc/rfc4271>.
-
    [RFC5652]  Housley, R., "Cryptographic Message Syntax (CMS)", STD 70,
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/rfc/rfc5652>.
@@ -257,16 +263,16 @@ Table of Contents
 
 7.2.  Informative References
 
-   [X.680]    "Information technology -- Abstract Syntax Notation One
-              (ASN.1): Specification of basic notation", Recommendation
-              ITU-T X.680 | ISO/IEC 8824-1 , February 2021,
+   [X.680]    ITU-T, "Information technology -- Abstract Syntax Notation
+              One (ASN.1): Specification of basic notation",
+              Recommendation ITU-T X.680 , February 2021,
               <https://itu.int/rec/T-REC-X.680-202102-I/en>.
 
-   [X.690]    "Information technology - ASN.1 encoding rules:
+   [X.690]    ITU-T, "Information technology - ASN.1 encoding rules:
               Specification of Basic Encoding Rules (BER), Canonical
               Encoding Rules (CER) and Distinguished Encoding Rules
-              (DER)", Recommendation ITU-T X.690 | ISO/IEC 8825-1 ,
-              February 2021, <[https://itu.int/rec/T-REC-X.680-202102-
+              (DER)", Recommendation ITU-T X.690 , February 2021,
+              <[https://itu.int/rec/T-REC-X.680-202102-
               I/en](https://www.itu.int/rec/T-REC-X.690-202102-I/en)>.
 
 Acknowledgments

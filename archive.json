@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-05-23T00:47:09.013296+00:00",
+  "timestamp": "2023-05-25T00:45:57.945667+00:00",
   "repo": "BasilGuo/fc-signed-object",
   "labels": [
     {
@@ -84,25 +84,89 @@
       "id": "PR_kwDOJl-e985Q_xZ5",
       "title": "update: sketch of FCSO",
       "url": "https://github.com/BasilGuo/fc-signed-object/pull/2",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasilGuo",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "The skeleton of FC signed object.",
       "createdAt": "2023-05-22T09:33:06Z",
-      "updatedAt": "2023-05-22T09:33:39Z",
+      "updatedAt": "2023-05-23T03:21:33Z",
       "baseRepository": "BasilGuo/fc-signed-object",
       "baseRefName": "main",
       "baseRefOid": "7e2c5bb33eb8f317d6d6116ca6968e6a3e0057b9",
       "headRepository": "BasilGuo/fc-signed-object",
       "headRefName": "sketch",
       "headRefOid": "8c070e4749427b3eb3d6e30a4afff8677bfad236",
+      "closedAt": "2023-05-23T03:21:32Z",
+      "mergedAt": "2023-05-23T03:21:32Z",
+      "mergedBy": "ZJOJZ",
+      "mergeCommit": {
+        "oid": "269db7678a23c18a93254213a14cc7519c7be7c6"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOJl-e985RHmv4",
+      "title": "Update draft-guo-fc-so.md with Content-Type and eContenttype",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/3",
+      "state": "MERGED",
+      "author": "ZJOJZ",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-05-23T08:49:36Z",
+      "updatedAt": "2023-05-24T01:55:42Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "199416db4d3522a3159ac1b6ad8b0cd3b3afc2b7",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "content",
+      "headRefOid": "5eeefb5c48ad4b87d98e05476c64fdbcb6341334",
+      "closedAt": "2023-05-24T01:55:42Z",
+      "mergedAt": "2023-05-24T01:55:42Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "f933031e6d0fcb2060a6fe16afe80f21e3bb5600"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOJl-e985ROZ09",
+      "title": "update abstract and introduction",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/4",
+      "state": "OPEN",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "update abstract and introduction content",
+      "createdAt": "2023-05-24T09:29:02Z",
+      "updatedAt": "2023-05-24T10:20:34Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "f933031e6d0fcb2060a6fe16afe80f21e3bb5600",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "update-intro",
+      "headRefOid": "8f2683707585a46e2b6e43570b97c1d9b235a36f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "BasilGuo",
+          "authorAssociation": "OWNER",
+          "body": "Don't merge this PR until all checks passed.",
+          "createdAt": "2023-05-24T10:15:32Z",
+          "updatedAt": "2023-05-24T10:15:32Z"
+        }
+      ],
       "reviews": []
     }
   ]

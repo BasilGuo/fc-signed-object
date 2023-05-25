@@ -84,11 +84,16 @@ Table of Contents
        3.4.1.  Element id
        3.4.2.  Element signature
    4.  FC Validation
-   5.  Security Considerations
-   6.  IANA Considerations
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   5.  FC based BGP AS_PATH verification
+   6.  Security Considerations
+   7.  IANA Considerations
+     7.1.  SMI Security for S/MIME CMS Content Type
+           (1.2.840.113549.1.9.16.1)
+     7.2.  SMI Security for S/MIME CMS Content Type registry
+     7.3.  RPKI Signed Object registry
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -163,7 +168,7 @@ Table of Contents
    formally defined by the following ASN.1 [X.680] module:
 
    RPKI-FC-2023 { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-   pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2022(TBD) }
+   pkcs-9(9) smime(16) modules(0) id-mod-rpki-FC-2023(TBD) }
 
    DEFINITIONS EXPLICIT TAGS ::= BEGIN
 
@@ -240,15 +245,15 @@ Table of Contents
 3.4.2.  Element signature
 
    Field signature is a signature signs by BGP speaker who issues this
-   FC.  We would give an example in Section 4.
+   FC.  We would give an example in Section 5.
 
 4.  FC Validation
 
-   Before a relying party can use a FC to validate a routing
-   announcement, the relying party MUST first validate the FC.  To
-   validate a FC, the relying party MUST perform all the validation
-   checks specified in [RFC6488] as well as the following additional FC-
-   specific validation steps.
+   Before a relying party can sign a new FC to announce it has trusted
+   and selected the routing announcement, the relying party MUST first
+   validate the FC object itself.  To validate a FC, the relying party
+   MUST perform all the validation checks specified in [RFC6488] as well
+   as the following additional FC-specific validation step.
 
    *  The IP Address Delegation extension [RFC3779] is present in the
       end-entity (EE) certificate (contained within the FC), and IP
@@ -260,20 +265,52 @@ Table of Contents
       contain "inherit" elements described in [RFC3779].
 
    *  The Autonomous System Identifier Delegation Extension described in
-      [RFC3779] is not used in Forwarding Commitment and MUST NOT be
+      [RFC3779] is also used in Forwarding Commitment and MUST be
       present in the EE certificate.
 
-5.  Security Considerations
+5.  FC based BGP AS_PATH verification
+
+6.  Security Considerations
 
    TODO: Security
 
-6.  IANA Considerations
+7.  IANA Considerations
 
-   TODO: An OID for FC is needed.
+7.1.  SMI Security for S/MIME CMS Content Type (1.2.840.113549.1.9.16.1)
 
-7.  References
+   Please add the id-mod-rpki-fc-2023 to the SMI Security for S/MIME
+   Module Identifier (1.2.840.113549.1.9.16.0) registry
+   (https://www.iana.org/assignments/smi-numbers/smi-
+   numbers.xml#security-smime-0) as follows:
 
-7.1.  Normative References
+   Decimal    Description                   Specification
+   ---------------------------------------------------------------------
+   TBD        id-mod-rpki-fc-2023           [RFC-to-be]
+
+7.2.  SMI Security for S/MIME CMS Content Type registry
+
+   Please add the FC to the SMI Security for S/MIME CMS Content Type
+   (1.2.840.113549.1.9.16.1) registry (https://www.iana.org/assignments/
+   smi-numbers/smi-numbers.xml#security-smime-1) as follows:
+
+   Decimal     Description                  Specification
+   ---------------------------------------------------------------------
+   TBD         id-ct-FC                     [RFC-to-be]
+
+7.3.  RPKI Signed Object registry
+
+   Please add Autonomous System Provider Authorization to the RPKI
+   Signed Object registry (https://www.iana.org/assignments/rpki/
+   rpki.xhtml#signed-objects) as follows:
+
+   Name        OID                          Specification
+   ---------------------------------------------------------------------
+   Forwarding
+   Commitment  1.2.840.113549.1.9.16.1.TBD  [RFC-to-be]
+
+8.  References
+
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -307,7 +344,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [X.680]    ITU-T, "Information technology -- Abstract Syntax Notation
               One (ASN.1): Specification of basic notation",

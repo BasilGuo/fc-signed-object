@@ -5,11 +5,14 @@
 Network Working Group                                              K. Xu
 Internet-Draft                                       Tsinghua University
 Intended status: Standards Track                                 X. Wang
-Expires: 26 November 2023                                               
+Expires: 27 November 2023                                               
                                                                   Y. Guo
                                                                         
                                                                  J. Zhan
-                                                             25 May 2023
+                                                                        
+                                                                   J. Wu
+                                                     Tsinghua University
+                                                             26 May 2023
 
 
                A Profile for Forwarding Commitments (FCs)
@@ -52,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 November 2023.
+   This Internet-Draft will expire on 27 November 2023.
 
 Copyright Notice
 
@@ -84,8 +87,11 @@ Table of Contents
        3.4.1.  Element id
        3.4.2.  Element signature
    4.  FC Validation
-   5.  FC based BGP AS_PATH verification
+   5.  FC based BGP AS_PATH Verification
+     5.1.  FC Generation
+     5.2.  FC Verification and AS_PATH Verification
    6.  Security Considerations
+     6.1.  Route Aggregation
    7.  IANA Considerations
      7.1.  SMI Security for S/MIME CMS Content Type
            (1.2.840.113549.1.9.16.1)
@@ -99,12 +105,17 @@ Table of Contents
 
 1.  Introduction
 
-   TODO: need more revised.  The primary purpose of the Resource Public
-   Key Infrastructure (RPKI) is to improve routing security.  (See
-   [RFC6480] for more information.)  As part of this system, a mechanism
-   is needed to allow entities to verify that an AS has been given
-   permission by an IP address holder to advertise route along the
-   propagation path.  A FC provides this function.
+   The Border Gateway Protocol (BGP) [RFC4271] was designed with no
+   mechanisms to validate the security of BGP attributes.  There are two
+   types of BGP security issues, BGP Hijacks and BGP Route Leaks
+   [RFC7908], plagues Internet security.
+
+   The primary purpose of the Resource Public Key Infrastructure (RPKI)
+   is to improve routing security.  (See [RFC6480] for more
+   information.)  As part of this system, a mechanism is needed to allow
+   entities to verify that an AS has been given permission by an IP
+   address holder to advertise route along the propagation path.  A FC
+   provides this function.
 
    Forwarding Commitment (FC) is a signed object that binds IP prefix
    with AS and its next hops, eventually it could compose and protect
@@ -114,9 +125,14 @@ Table of Contents
    this means orginator AS has authorized its next hops to propagate its
    own prefix.  And originator AS's next hops would also recive this
    prefix and send to its next hops.  The relationship among them is the
-   signed FC.  The Forwarding Commitments also tell the ASes in the
-   propagation path that the previous hop AS has received and selected
-   this AS_PATH.
+   signed FC.  Than means a FC attests that a downstream AS has been
+   selected by the upstream AS who links to the downstream AS directly
+   to announce the IP prefix.  The ASes of propagation path of one IP
+   prefix should sign such a FC independently.  All the FCs of one IP
+   prefix propagation path could detect if there are any route leaks and
+   filter route hijacks.  The Forwarding Commitments also tell the ASes
+   in the propagation path that the previous hop AS has received and
+   selected this AS_PATH.
 
    The FC uses the template for RPKI digitally signed objects [RFC6488]
    for the definition of a Cryptographic Message Syntax (CMS) [RFC5652]
@@ -245,7 +261,7 @@ Table of Contents
 3.4.2.  Element signature
 
    Field signature is a signature signs by BGP speaker who issues this
-   FC.  We would give an example in Section 5.
+   FC.
 
 4.  FC Validation
 
@@ -268,11 +284,107 @@ Table of Contents
       [RFC3779] is also used in Forwarding Commitment and MUST be
       present in the EE certificate.
 
-5.  FC based BGP AS_PATH verification
+5.  FC based BGP AS_PATH Verification
+
+5.1.  FC Generation
+
+   The FC generation procedure follows the BGP-UPDATE.  When one AS
+   establish connection with its peer, it announces its route to peers.
+   It SHOULD generate FC for each IP prefix in the BGP-UPDATE.  For
+   example, there are 3 ASes and the topology of them is in a line as
+   Figure 1 shows.
+
+   +-------+     +-------+     +-------+
+   | AS 10 | --- | AS 20 | --- | AS 30 |
+   +-------+     +-------+     +-------+
+
+                    Figure 1: A topology example of 3 AS
+
+   Suppose that the simplified RIB table of AS 10 is as follows.  That
+   means there are 1 BGP-UPDATE is announced from AS 30 to AS 20 and 1
+   BGP-UPDATE is announced from AS 20 to AS 10.  It would generate one
+   FC for prefix 30.0.0.0/8 when BGP-UPDATE is announced from AS 30 to
+   AS 20.  But when BGP-UPDATE is announced from AS 20 to AS 10, it
+   would generate two FCs, one for prefix 30.0.0.0 and one for prefix
+   20.0.0.0/8.
+
+   Network      Next Hop    Path
+   10.0.0.0/8   0.0.0.0     i
+   20.0.0.0/8   10.0.0.1    20 i
+   30.0.0.0/8   10.0.0.1    20 30 i
+
+                  Figure 2: Simplified RIB table of AS 10
+
+   For BGP-UPDATE announced from AS 30 to AS 20, it fills the eContent
+   of FC signed object as follows:
+
+   FC_{30, 20}:
+     version: 0
+     orginatorASID: 30
+     prefix:
+       afi: 1
+       address: 30.0.0.0
+       prefixLength: 8
+     ForwardingCommitment:
+       id: HASH({30}, 20, 30.0.0.0/8)
+       signature: SIGNATURE1
+
+   For BGP-UPDATE announced from AS 30 to AS 20, it fills the eContent
+   of FC signed objects as follows:
+
+   FC_{30, 20, 10}:
+     version: 0
+     orginatorASID: 30
+     prefix:
+       afi: 1
+       address: 30.0.0.0
+       prefixLength: 8
+     ForwardingCommitment:
+       id: HASH({30, 20}, 10, 30.0.0.0/8)
+       signature: SIGNATURE2
+
+   FC_{20, 10}:
+     version: 0
+     orginatorASID: 20
+     prefix:
+       afi: 1
+       address: 20.0.0.0
+       prefixLength: 8
+     ForwardingCommitment:
+       id: HASH({20}, 20.0.0.0/8)
+       signature: SIGNATURE3
+
+   These FC signed objects MUST store into RPKI repository as soon as
+   possible after BGP announcement.
+
+5.2.  FC Verification and AS_PATH Verification
+
+   When one AS receives one BGP-UPDATE, it MUST do as usual: filter BGP
+   route using its local policy, scratch BGP route to its Route
+   Information Base (RIB) table, generate Forwarding Information Base
+   (FIB) table, and send it out as per routing policy.
+
+   When the FC signed objects synchronize from RPKI repository, the BGP
+   speaker MUST find FCs according to the ForwardingCommitment-id:
+   HASH(current_AS_PATH, nextHopAS, prefix) in its RIB.  If it finds one
+   matched, the BGP speaker verifies the ForwardingCommitment-signature
+   in RPKI repository.
+
+   It SHOULD verify all FCs along the AS_PATH for AS_PATH verification.
+   For example, AS 10 should verify FC_{30, 20} and FC_{30, 20, 10} for
+   prefix 30.0.0.0/8 in Figure 1.  If all FCs check passed, the AS_PATH
+   would be a valid one.
 
 6.  Security Considerations
 
-   TODO: Security
+6.1.  Route Aggregation
+
+   There is no mechanism in FC could protect one prefix has been
+   aggregated along the route propagation.
+
+   Maybe a MinLength like MaxLength in ROA could help to mitigate the
+   effects of route aggregation.  This field means it permits who to
+   aggregate and aggregate to which degree.
 
 7.  IANA Considerations
 
@@ -322,6 +434,11 @@ Table of Contents
               DOI 10.17487/RFC3779, June 2004,
               <https://www.rfc-editor.org/rfc/rfc3779>.
 
+   [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
+              Border Gateway Protocol 4 (BGP-4)", RFC 4271,
+              DOI 10.17487/RFC4271, January 2006,
+              <https://www.rfc-editor.org/rfc/rfc4271>.
+
    [RFC5652]  Housley, R., "Cryptographic Message Syntax (CMS)", STD 70,
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/rfc/rfc5652>.
@@ -339,6 +456,11 @@ Table of Contents
               Template for the Resource Public Key Infrastructure
               (RPKI)", RFC 6488, DOI 10.17487/RFC6488, February 2012,
               <https://www.rfc-editor.org/rfc/rfc6488>.
+
+   [RFC7908]  Sriram, K., Montgomery, D., McPherson, D., Osterweil, E.,
+              and B. Dickson, "Problem Definition and Classification of
+              BGP Route Leaks", RFC 7908, DOI 10.17487/RFC7908, June
+              2016, <https://www.rfc-editor.org/rfc/rfc7908>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -366,16 +488,31 @@ Authors' Addresses
 
    Ke Xu
    Tsinghua University
+   Beijing
+   China
    Email: xuke@tsinghua.edu.cn
 
 
    Xiaoliang Wang
+   Beijing
+   China
    Email: wangxiaoliang0623@foxmail.com
 
 
    Yangfei Guo
+   Beijing
+   China
    Email: guoyangfei@zgclab.edu.cn
 
 
    Jiangou Zhan
+   Beijing
+   China
    Email: 904542587@qq.com
+
+
+   Jianping Wu
+   Tsinghua University
+   Beijing
+   China
+   Email: jianping@cernet.edu.cn

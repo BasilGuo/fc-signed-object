@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-05-25T00:45:57.945667+00:00",
+  "timestamp": "2023-05-28T00:52:08.454233+00:00",
   "repo": "BasilGuo/fc-signed-object",
   "labels": [
     {
@@ -140,24 +140,26 @@
       "id": "PR_kwDOJl-e985ROZ09",
       "title": "update abstract and introduction",
       "url": "https://github.com/BasilGuo/fc-signed-object/pull/4",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasilGuo",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "update abstract and introduction content",
       "createdAt": "2023-05-24T09:29:02Z",
-      "updatedAt": "2023-05-24T10:20:34Z",
+      "updatedAt": "2023-05-25T09:14:36Z",
       "baseRepository": "BasilGuo/fc-signed-object",
       "baseRefName": "main",
       "baseRefOid": "f933031e6d0fcb2060a6fe16afe80f21e3bb5600",
       "headRepository": "BasilGuo/fc-signed-object",
       "headRefName": "update-intro",
-      "headRefOid": "8f2683707585a46e2b6e43570b97c1d9b235a36f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "7df9f77a24096007a3d0f762c7833096cf327930",
+      "closedAt": "2023-05-25T09:14:35Z",
+      "mergedAt": "2023-05-25T09:14:35Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "633a684aa5a48c5cf911dabddca1b18123974a86"
+      },
       "comments": [
         {
           "author": "BasilGuo",
@@ -167,6 +169,62 @@
           "updatedAt": "2023-05-24T10:15:32Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOJl-e985RZUkA",
+      "title": "update: fc-verification",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/5",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-05-26T02:16:06Z",
+      "updatedAt": "2023-05-26T02:16:55Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "57acbf68b2696b466c6ff28945cce61d82a9031f",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "BasilGuo-update-fc-verification",
+      "headRefOid": "2da21e1a5d6c35b6cf6c35b1781c4b5e033df5ec",
+      "closedAt": "2023-05-26T02:16:55Z",
+      "mergedAt": "2023-05-26T02:16:54Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "981fe8b3d7f54d120c48cba25d9490eb9df73e51"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOJl-e985Rabqh",
+      "title": "update: using reserved ASN and IP prefix for docs.",
+      "url": "https://github.com/BasilGuo/fc-signed-object/pull/6",
+      "state": "MERGED",
+      "author": "BasilGuo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "For I-D, IETF has reserved some Internet Number Resources for documents. It should use reserved ones instead of the previous ASN and IP prefixes.",
+      "createdAt": "2023-05-26T07:54:35Z",
+      "updatedAt": "2023-05-26T08:16:56Z",
+      "baseRepository": "BasilGuo/fc-signed-object",
+      "baseRefName": "main",
+      "baseRefOid": "c3e4c74f2575c671742172ba5c2241cf026f5ccf",
+      "headRepository": "BasilGuo/fc-signed-object",
+      "headRefName": "BasilGuo-reserved-inr",
+      "headRefOid": "6adef427890399562244c202a4d3ae391914d2ce",
+      "closedAt": "2023-05-26T08:16:56Z",
+      "mergedAt": "2023-05-26T08:16:56Z",
+      "mergedBy": "BasilGuo",
+      "mergeCommit": {
+        "oid": "2f5ab201d6107054590949b8ff9d3b8a27e3e8a9"
+      },
+      "comments": [],
       "reviews": []
     }
   ]

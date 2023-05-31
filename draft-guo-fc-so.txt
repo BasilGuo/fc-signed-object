@@ -5,12 +5,12 @@
 Network Working Group                                              K. Xu
 Internet-Draft                                                   X. Wang
 Intended status: Standards Track                     Tsinghua University
-Expires: 27 November 2023                                         Y. Guo
+Expires: 2 December 2023                                          Y. Guo
                                                   Zhongguancun Labratory
                                                                  J. Zhan
                                                                    J. Wu
                                                      Tsinghua University
-                                                             26 May 2023
+                                                             31 May 2023
 
 
                A Profile for Forwarding Commitments (FCs)
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 November 2023.
+   This Internet-Draft will expire on 2 December 2023.
 
 Copyright Notice
 
@@ -319,8 +319,8 @@ END
 
    Network           Next Hop        Path
    2001:db8:a::/48   ::              i
-   2001:db8:b::/48   2001:db8:a::1   20 i
-   2001:db8:c::/48   2001:db8:a::1   20 30 i
+   2001:db8:b::/48   2001:db8:a::1   65537 i
+   2001:db8:c::/48   2001:db8:a::1   65537 65538 i
 
                  Figure 3: Simplified RIB table of AS 65536
 

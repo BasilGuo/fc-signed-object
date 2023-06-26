@@ -11,22 +11,22 @@
 <meta content="Jiangou Zhan" name="author">
 <meta content="Jianping Wu" name="author">
 <meta content="
-       This document defines a standard profile for Forwarding Commitment (FC) used in Resource Public Key Infrastructure (RPKI). A FC is a digitally signed object that provides a means of verifying that an IP address prefix is announced from  AS a  to  AS b . When validated, a FC's eContent can be used for detection and mitigation of route hijacking and provide protection for the AS_PATH attribute in BGP-UPDATE. 
+       This document defines a standard profile for Forwarding Commitment (FC) used in Resource Public Key Infrastructure (RPKI). An FC is a digitally signed object that provides a means of verifying that an IP address prefix is announced from  AS a  to  AS b . When validated, an FC's eContent can be used for the detection and mitigation of route hijacking and provide protection for the AS_PATH attribute in BGP-UPDATE. 
     " name="description">
-<meta content="xml2rfc 3.17.1" name="generator">
+<meta content="xml2rfc 3.17.3" name="generator">
 <meta content="draft-guo-fc-so-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.17.1
-    Python 3.11.3
+  xml2rfc 3.17.3
+    Python 3.11.4
     appdirs 1.4.4
     ConfigArgParse 1.5.3
-    google-i18n-address 2.5.2
+    google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.2
     pycountry 22.3.5
     PyYAML 6.0
-    requests 2.30.0
+    requests 2.31.0
     setuptools 67.7.2
     six 1.16.0
     wcwidth 0.2.6
@@ -611,6 +611,7 @@ sub, sup {
   clear: left;
   float: left;
   text-align: right;
+  margin-right: 1ch;
 }
 #identifiers dd {
   margin: 0;
@@ -1049,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Forwarding Commitments</td>
-<td class="right">May 2023</td>
+<td class="right">June 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Xu, et al.</td>
-<td class="center">Expires 2 December 2023</td>
+<td class="center">Expires 28 December 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-guo-fc-so-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-05-31" class="published">31 May 2023</time>
+<time datetime="2023-06-26" class="published">26 June 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-12-02">2 December 2023</time></dd>
+<dd class="expires"><time datetime="2023-12-28">28 December 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1100,7 +1101,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">A Profile for Forwarding Commitments (FCs)</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a standard profile for Forwarding Commitment (FC) used in Resource Public Key Infrastructure (RPKI). A FC is a digitally signed object that provides a means of verifying that an IP address prefix is announced from <code>AS a</code> to <code>AS b</code>. When validated, a FC's eContent can be used for detection and mitigation of route hijacking and provide protection for the AS_PATH attribute in BGP-UPDATE.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a standard profile for Forwarding Commitment (FC) used in Resource Public Key Infrastructure (RPKI). An FC is a digitally signed object that provides a means of verifying that an IP address prefix is announced from <code>AS a</code> to <code>AS b</code>. When validated, an FC's eContent can be used for the detection and mitigation of route hijacking and provide protection for the AS_PATH attribute in BGP-UPDATE.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1132,7 +1133,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 December 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 28 December 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1271,16 +1272,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">The Border Gateway Protocol (BGP) <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span> was designed with no mechanisms to validate the security of BGP attributes. There are two types of BGP security issues, BGP Hijacks and BGP Route Leaks <span>[<a href="#RFC7908" class="cite xref">RFC7908</a>]</span>, plagues Internet security.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve routing security.  (See <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span> for more information.) As part of this system, a mechanism is needed to allow entities to verify that an AS has been given permission by an IP address holder to advertise route along the propagation path. A FC provides this function.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Forwarding Commitment (FC) is a signed object that binds IP prefix with AS and its next hops, eventually it could compose and protect the path of BGP-UPDATE propagation. It uses a Web of Trust in this propagation model. That means It performs more like that originator AS trusts its next hop ASes and sends its route to its next hops. By this means orginator AS has authorized its next hops to propagate its own prefix. And originator AS's next hops would also recive this prefix and send to its next hops. The relationship among them is the signed FC. Than means a FC attests that a downstream AS has been selected by the upstream AS who links to the downstream AS directly to announce the IP prefix. The ASes of propagation path of one IP prefix should sign such a FC independently. All the FCs of one IP prefix propagation path could detect if there are any route leaks and filter route hijacks. The Forwarding Commitments also tell the ASes in the propagation path that the previous hop AS has received and selected this AS_PATH.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">The FC uses the template for RPKI digitally signed objects <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> for the definition of a Cryptographic Message Syntax (CMS) <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> wrapper for the FC content as well as a generic validation procedure for RPKI signed objects.  As FCs need to be validated with RPKI certificates issued by the current infrastructure, we assume the mandatory-to-implement algorithms in <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span>, or its successor.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-2">The primary purpose of the Resource Public Key Infrastructure (RPKI) is to improve routing security.  (See <span>[<a href="#RFC6480" class="cite xref">RFC6480</a>]</span> for more information.) As part of this system, a mechanism is needed to allow entities to verify that an AS has been given permission by an IP address holder to advertise a route along the propagation path. An FC provides this function.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Forwarding Commitment (FC) is a signed object that binds the IP prefix with AS and its next hops, eventually, it could compose and protect the path of BGP-UPDATE propagation. It uses a Web of Trust in this propagation model. That means It performs more like that originator AS trusts its next hop ASes and sends its route to its next hops. By this means originator AS has authorized its next hops to propagate its own prefix. And originator AS's next hops would also receive this prefix and send it to its next hops. The relationship among them is the signed FC. That means an FC attests that a downstream AS has been selected by the upstream AS that links to the downstream AS directly to announce the IP prefix. The ASes of the propagation path of one IP prefix should sign such an FC independently. All the FCs of one IP prefix propagation path could detect if there are any route leaks and filter route hijacks. The Forwarding Commitments also tell the ASes in the propagation path that the previous hop AS has received and selected this AS_PATH.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">The FC uses the template for RPKI digitally signed objects <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> for the definition of a Cryptographic Message Syntax (CMS) <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> wrapper for the FC content as well as a generic validation procedure for RPKI signed objects.  As FCs need to be validated with RPKI certificates issued by the current infrastructure, we assume the mandatory-to-implement algorithms in <span>[<a href="#RFC6485" class="cite xref">RFC6485</a>]</span> or its successor.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">To complete the specification of the FC (see <span><a href="https://rfc-editor.org/rfc/rfc6488#section-4" class="relref">Section 4</a> of [<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>), this document defines:<a href="#section-1-5" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1-6">
-<li id="section-1-6.1">The object identifier (OID) that identifies the FC signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure).<a href="#section-1-6.1" class="pilcrow">¶</a>
+<li id="section-1-6.1">The object identifier (OID) that identifies the FC signed object. This OID appears in the eContentType field of the encapContentInfo object as well as the content-type signed attribute within the signerInfo structure.<a href="#section-1-6.1" class="pilcrow">¶</a>
 </li>
         <li id="section-1-6.2">The ASN.1 syntax for the FC content, which is the payload signed by the BGP speaker. The FC content is encoded using the ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> Distinguished Encoding Rules (DER) <span>[<a href="#X.690" class="cite xref">X.690</a>]</span>.<a href="#section-1-6.2" class="pilcrow">¶</a>
 </li>
-        <li id="section-1-6.3">The steps required to validate an FC beyond the validation steps specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>).<a href="#section-1-6.3" class="pilcrow">¶</a>
+        <li id="section-1-6.3">The steps required to validate an FC beyond the validation steps specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>.<a href="#section-1-6.3" class="pilcrow">¶</a>
 </li>
       </ol>
 <div id="requirements-language">
@@ -1301,7 +1302,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       <h2 id="name-the-fc-content-type">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-the-fc-content-type" class="section-name selfRef">The FC Content-Type</a>
       </h2>
-<p id="section-2-1">The content-type for a FC is defined as ForwardingCommitment and has the numerical value of 1.2.840.113549.1.9.16.1.(TBD).<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">The content-type for an FC is defined as ForwardingCommitment and has the numerical value of 1.2.840.113549.1.9.16.1.(TBD).<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">This OID <span class="bcp14">MUST</span> appear both within the eContentType in the encapContentInfo object as well as the content-type signed attribute in the signerInfo object (see <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span>).<a href="#section-2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1310,7 +1311,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       <h2 id="name-the-fc-econtent">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-fc-econtent" class="section-name selfRef">The FC eContent</a>
       </h2>
-<p id="section-3-1">The content of a FC identifies a forwarding commitment and forwarding binding that an AS announces to other nodes upon receiving BGP-UPDATE message. Other ASes which on-path can validate the FC and perform path verification for traffic forwarding based on the AS-path information. Off-path ASes can utilize this FC for collaborative filtering. A FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> module:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">The content of an FC identifies a forwarding commitment and forwarding binding that an AS announces to other nodes upon receiving a BGP-UPDATE message. Other ASes that are on-path can validate the FC and perform path verification for traffic forwarding based on the AS-path information. Off-path ASes can utilize this FC for collaborative filtering. An FC is an instance of ForwardingCommitmentAttestation, formally defined by the following ASN.1 <span>[<a href="#X.680" class="cite xref">X.680</a>]</span> module:<a href="#section-3-1" class="pilcrow">¶</a></p>
 <span id="name-econtent-of-fc-signed-objec"></span><div id="fig-eContentFC">
 <figure id="figure-1">
         <div class="alignLeft art-text artwork" id="section-3-2.1">
@@ -1328,8 +1329,8 @@ IMPORTS
     { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
       pkcs-9(9) smime(16) modules(0) id-mod-cms-2009(58) } ;
 
-id-ct-FC OBJECT IDENTIFIER ::= { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-    pkcs-9(9) id-smime(16) id-ct(1) fc(TDB) }
+id-ct-FC OBJECT IDENTIFIER ::= { iso(1) member-body(2) us(840)
+    rsadsi(113549) pkcs(1) pkcs-9(9) id-smime(16) id-ct(1) fc(TDB) }
 
 ct-FC CONTENT-TYPE ::=
     { TYPE ForwardingCommitmentAttestation IDENTIFIED BY id-ct-FC }
@@ -1384,7 +1385,7 @@ END
         <h3 id="name-type-prefix">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-type-prefix" class="section-name selfRef">Type Prefix</a>
         </h3>
-<p id="section-3.3-1">Within the Prefix structure, the prefix field encodes the set of IP address prefixes which announced by the originator AS in AS-path.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">Within the Prefix structure, the prefix field encodes the set of IP address prefixes announced by the originator AS in AS_PATH.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <div id="element-afi">
 <section id="section-3.3.1">
           <h4 id="name-element-afi">
@@ -1406,7 +1407,7 @@ END
           <h4 id="name-element-prefixlength">
 <a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-element-prefixlength" class="section-name selfRef">Element prefixLength</a>
           </h4>
-<p id="section-3.3.3-1">The prefixLength field contains the lenth of IP address prefix.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-1">The prefixLength field contains the length of the IP address prefix.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1416,13 +1417,13 @@ END
         <h3 id="name-type-forwardingcommitment">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-type-forwardingcommitment" class="section-name selfRef">Type ForwardingCommitment</a>
         </h3>
-<p id="section-3.4-1">Within the ForwardingCommitment structure, the fc field encodes the forwarding commitment which generated by this AS and will be validated by other AS.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">Within the ForwardingCommitment structure, the fc field encodes the forwarding commitment generated by this AS and will be validated by other AS.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <div id="element-id">
 <section id="section-3.4.1">
           <h4 id="name-element-id">
 <a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-element-id" class="section-name selfRef">Element id</a>
           </h4>
-<p id="section-3.4.1-1">The id field contains the hash of current AS-path in the associated BGP-UPDATE plus next hop AS and above prefix filed.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-1">The id field contains the hash of the current AS-path in the associated BGP-UPDATE plus the next hop AS and above prefix filed.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="element-signature">
@@ -1430,7 +1431,7 @@ END
           <h4 id="name-element-signature">
 <a href="#section-3.4.2" class="section-number selfRef">3.4.2. </a><a href="#name-element-signature" class="section-name selfRef">Element signature</a>
           </h4>
-<p id="section-3.4.2-1">Field signature is a signature signs by BGP speaker who issues this FC.<a href="#section-3.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.2-1">The signature field is a signature signed by the BGP speaker who issues this FC.<a href="#section-3.4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1442,9 +1443,9 @@ END
       <h2 id="name-fc-validation">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-fc-validation" class="section-name selfRef">FC Validation</a>
       </h2>
-<p id="section-4-1">Before a relying party can sign a new FC to announce it has trusted and selected the routing announcement, the relying party <span class="bcp14">MUST</span> first validate the FC object itself. To validate a FC, the relying party <span class="bcp14">MUST</span> perform all the validation checks specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> as well as the following additional FC-specific validation step.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">Before a relying party can sign a new FC to announce it has trusted and selected the routing announcement, the relying party <span class="bcp14">MUST</span> first validate the FC object itself. To validate an FC, the relying party <span class="bcp14">MUST</span> perform all the validation checks specified in <span>[<a href="#RFC6488" class="cite xref">RFC6488</a>]</span> as well as the following additional FC-specific validation step.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4-2.1">The IP Address Delegation extension <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is present in the end-entity (EE) certificate (contained within the FC), and IP address prefix in the FC payload is contained within the set of IP addresses specified by the EE certificate's IP Address Delegation extension.<a href="#section-4-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4-2.1">The IP Address Delegation extension <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span> is present in the end-entity (EE) certificate (contained within the FC), and the IP address prefix in the FC payload is contained within the set of IP addresses specified by the EE certificate's IP Address Delegation extension.<a href="#section-4-2.1" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-4-2.2">The EE certificate's IP Address Delegation extension <span class="bcp14">MUST NOT</span> contain "inherit" elements described in <span>[<a href="#RFC3779" class="cite xref">RFC3779</a>]</span>.<a href="#section-4-2.2" class="pilcrow">¶</a>
 </li>
@@ -1463,7 +1464,7 @@ END
         <h3 id="name-fc-generation">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-fc-generation" class="section-name selfRef">FC Generation</a>
         </h3>
-<p id="section-5.1-1">The FC generation procedure follows the BGP-UPDATE. When one AS establish connection with its peer, it announces its route to peers. It <span class="bcp14">SHOULD</span> generate FC for each IP prefix in the BGP-UPDATE. For example, there are 3 ASes and the topology of them is in a line as <a href="#fig-example" class="auto internal xref">Figure 2</a> shows.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The FC generation procedure follows the BGP-UPDATE. When one AS establishes a connection with its peer, it announces its route to peers. It <span class="bcp14">SHOULD</span> generate FC for each IP prefix in the BGP-UPDATE. For example, there are 3 ASes and the topology of them is in a line as <a href="#fig-example" class="auto internal xref">Figure 2</a> shows.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <span id="name-a-topology-example-of-3-as"></span><div id="fig-example">
 <figure id="figure-2">
           <div class="alignLeft art-text artwork" id="section-5.1-2.1">
@@ -1477,7 +1478,7 @@ END
 <a href="#name-a-topology-example-of-3-as" class="selfRef">A topology example of 3 AS</a>
           </figcaption></figure>
 </div>
-<p id="section-5.1-3">Suppose that the simplified RIB table of AS 65536 is as follows. That means there are 1 BGP-UPDATE is announced from AS 65538 to AS 65537 and 1 BGP-UPDATE is announced from AS 65537 to AS 65536. It would generate one FC for prefix 2001:db8:c::/48  when BGP-UPDATE is announced from AS 65538 to AS 65537. But when BGP-UPDATE is announced from AS 65537 to AS 65536, it would generate two FCs, one for prefix 2001:db8:c::/48 and one for prefix 2001:db8:b::/48.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">Suppose that the simplified RIB table of AS 65536 is as follows. That means there is 1 BGP-UPDATE that is announced from AS 65538 to AS 65537 and 1 BGP-UPDATE that is announced from AS 65537 to AS 65536. It would generate one FC for prefix 2001:db8:c::/48  when BGP-UPDATE is announced from AS 65538 to AS 65537. But when BGP-UPDATE is announced from AS 65537 to AS 65536, it would generate two FCs, one for the prefix 2001:db8:c::/48 and one for the prefix 2001:db8:b::/48.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <span id="name-simplified-rib-table-of-as-"></span><div id="fig-rib-of-AS65536">
 <figure id="figure-3">
           <div class="alignLeft art-text artwork" id="section-5.1-4.1">
@@ -1529,11 +1530,11 @@ FC_{65537, 65536}:
     address: 2001:db8:b::
     prefixLength: 48
   ForwardingCommitment:
-    id: HASH({65537}, 2001:db8:b::/48)
+    id: HASH({65537}, 65536, 2001:db8:b::/48)
     signature: SIGNATURE3
 </pre><a href="#section-5.1-8" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-9">These FC signed objects <span class="bcp14">MUST</span> store into RPKI repository as soon as possible after BGP announcement.<a href="#section-5.1-9" class="pilcrow">¶</a></p>
+<p id="section-5.1-9">These FC signed objects <span class="bcp14">MUST</span> store in the RPKI repository as soon as possible after the BGP announcement.<a href="#section-5.1-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="fc-verification-and-aspath-verification">
@@ -1541,9 +1542,9 @@ FC_{65537, 65536}:
         <h3 id="name-fc-verification-and-as_path">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-fc-verification-and-as_path" class="section-name selfRef">FC Verification and AS_PATH Verification</a>
         </h3>
-<p id="section-5.2-1">When one AS receives one BGP-UPDATE, it <span class="bcp14">MUST</span> do as usual: filter BGP route using its local policy, scratch BGP route to its Route Information Base (RIB) table, generate Forwarding Information Base (FIB) table, and send it out as per routing policy.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">When the FC signed objects synchronize from RPKI repository, the BGP speaker <span class="bcp14">MUST</span> find FCs according to the ForwardingCommitment-id: HASH(current_AS_PATH, nextHopAS, prefix) in its RIB. If it finds one matched, the BGP speaker verifies the ForwardingCommitment-signature in RPKI repository.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">It <span class="bcp14">SHOULD</span> verify all FCs along the AS_PATH for AS_PATH verification. For example, AS 65536 should verify FC_{65538, 65537} and FC_{65538, 65537, 65536} for prefix 2001:db8:c::/48 in <a href="#fig-example" class="auto internal xref">Figure 2</a>. If all FCs check passed, the AS_PATH would be a valid one.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">When one AS receives one BGP-UPDATE, it <span class="bcp14">MUST</span> do as usual: filter the BGP route using its local policy, scratch the BGP route to its Route Information Base (RIB) table, generate Forwarding Information Base (FIB) table, and send it out as per the routing policy.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">When the FC signed objects synchronize from the RPKI repository, the BGP speaker <span class="bcp14">MUST</span> find FCs according to the ForwardingCommitment-id: HASH(current_AS_PATH, nextHopAS, prefix) in its RIB. If it finds one matched, the BGP speaker verifies the ForwardingCommitment-signature in the RPKI repository.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">It <span class="bcp14">SHOULD</span> verify all FCs along the AS_PATH for AS_PATH verification. For example, AS 65536 should verify FC_{65538, 65537} and FC_{65538, 65537, 65536} for prefix 2001:db8:c::/48 in <a href="#fig-example" class="auto internal xref">Figure 2</a>. If all FCs checks passed, the AS_PATH would be a valid one.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1558,7 +1559,7 @@ FC_{65537, 65536}:
         <h3 id="name-route-aggregation">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-route-aggregation" class="section-name selfRef">Route Aggregation</a>
         </h3>
-<p id="section-6.1-1">There is no mechanism in FC could protect one prefix has been aggregated along the route propagation.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">There is no mechanism in FC that could protect one prefix that has been aggregated along the route propagation.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.1-2">Maybe a MinLength like MaxLength in ROA could help to mitigate the effects of route aggregation. This field means it permits who to aggregate and aggregate to which degree.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1604,7 +1605,7 @@ TBD         id-ct-FC                     [RFC-to-be]
         <h3 id="name-rpki-signed-object-registry">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-rpki-signed-object-registry" class="section-name selfRef">RPKI Signed Object registry</a>
         </h3>
-<p id="section-7.3-1">Please add Autonomous System Provider Authorization to the RPKI Signed Object registry (https://www.iana.org/assignments/rpki/rpki.xhtml#signed-objects) as follows:<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">Please add Forwarding Commitment to the RPKI Signed Object registry (https://www.iana.org/assignments/rpki/rpki.xhtml#signed-objects) as follows:<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.3-2">
 <pre>
 Name        OID                          Specification
